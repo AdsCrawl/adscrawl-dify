@@ -1,0 +1,102 @@
+identity:
+  author: adscrawl
+  name: render_page
+  label:
+    en_US: Render Page
+    zh_Hans: 渲染网页
+description:
+  human:
+    en_US: Render a public HTTP(S) page as HTML, readable Markdown, or article JSON using AdsCrawl.
+    zh_Hans: 使用 AdsCrawl 将公开 HTTP(S) 页面渲染为 HTML、可读 Markdown 或文章 JSON。
+  llm: >-
+    Render a public web page with AdsCrawl's browser-backed POST /html API. Use only pages you are authorized to access. Choose html, markdown, or json; markdown is usually best for reading. A CSS selector is optional and can focus the response on one page element. Requests may consume AdsCrawl credits. Do not include passwords, API keys, cookies, or other secrets in the URL.
+parameters:
+  - name: url
+    type: string
+    required: true
+    label:
+      en_US: Page URL
+      zh_Hans: 页面 URL
+    human_description:
+      en_US: Full public HTTP or HTTPS URL (ports 80 and 443 only).
+      zh_Hans: 完整的公开 HTTP 或 HTTPS URL（仅支持 80 和 443 端口）。
+    llm_description: The full public page URL to render. Do not use embedded credentials, localhost, private IP addresses, or non-standard ports.
+    form: llm
+  - name: content_mode
+    type: select
+    required: true
+    default: markdown
+    options:
+      - value: markdown
+        label:
+          en_US: Markdown
+          zh_Hans: Markdown
+      - value: html
+        label:
+          en_US: HTML
+          zh_Hans: HTML
+      - value: json
+        label:
+          en_US: Article JSON
+          zh_Hans: 文章 JSON
+    label:
+      en_US: Output format
+      zh_Hans: 输出格式
+    human_description:
+      en_US: Choose HTML, readable Markdown, or structured article JSON.
+      zh_Hans: 选择 HTML、可读 Markdown 或结构化文章 JSON。
+    llm_description: Select markdown for readable article content, html for page markup, or json for the Readability article fields.
+    form: llm
+  - name: selector
+    type: string
+    required: false
+    label:
+      en_US: CSS selector (optional)
+      zh_Hans: CSS 选择器（可选）
+    human_description:
+      en_US: Optional CSS selector to wait for and focus extraction on a single element.
+      zh_Hans: 可选 CSS 选择器，用于等待并聚焦提取单个元素。
+    llm_description: Optional CSS selector, up to 512 characters. Leave empty to process the page. For content_mode=html, only the matched element's HTML is returned; markdown and json run Readability on that element.
+    form: llm
+  - name: wait_until
+    type: select
+    required: false
+    default: domcontentloaded
+    options:
+      - value: domcontentloaded
+        label:
+          en_US: DOM content loaded
+          zh_Hans: DOM 内容加载完成
+      - value: load
+        label:
+          en_US: Load
+          zh_Hans: 完全加载
+      - value: networkidle
+        label:
+          en_US: Network idle
+          zh_Hans: 网络空闲
+    label:
+      en_US: Wait strategy
+      zh_Hans: 等待策略
+    human_description:
+      en_US: Page navigation wait strategy. DOM content loaded is the default.
+      zh_Hans: 页面导航等待策略，默认等待 DOM 内容加载。
+    llm_description: Choose domcontentloaded for a fast content-ready response, load for dependent page resources, or networkidle when the page needs a quiet network. Long polling may time out with networkidle.
+    form: llm
+  - name: timeout_ms
+    type: number
+    required: false
+    default: 60000
+    min: 1000
+    max: 90000
+    label:
+      en_US: Timeout (ms)
+      zh_Hans: 超时时间（毫秒）
+    human_description:
+      en_US: Navigation timeout from 1,000 to 90,000 milliseconds.
+      zh_Hans: 导航超时时间，范围为 1,000 至 90,000 毫秒。
+    llm_description: Maximum page-navigation time in milliseconds. Must be from 1000 to 90000; defaults to 60000.
+    form: llm
+extra:
+  python:
+    source: tools/render_page.py

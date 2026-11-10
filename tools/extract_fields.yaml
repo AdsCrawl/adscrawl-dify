@@ -1,0 +1,78 @@
+identity:
+  author: adscrawl
+  name: extract_fields
+  label:
+    en_US: Extract Fields
+    zh_Hans: 抽取字段
+description:
+  human:
+    en_US: Extract named fields from a public web page using CSS selectors and AdsCrawl.
+    zh_Hans: 使用 CSS 选择器和 AdsCrawl 从公开网页中抽取命名字段。
+  llm: >-
+    Extract structured fields from a public page using AdsCrawl's POST /spa-extract API. Provide fields_json as a JSON object mapping output names to CSS selectors, such as {"title":"h1","price":".price"}. Use only pages you are authorized to access. Requests may consume AdsCrawl credits. Do not include passwords, API keys, cookies, or other secrets.
+parameters:
+  - name: url
+    type: string
+    required: true
+    label:
+      en_US: Page URL
+      zh_Hans: 页面 URL
+    human_description:
+      en_US: Full public HTTP or HTTPS URL (ports 80 and 443 only).
+      zh_Hans: 完整的公开 HTTP 或 HTTPS URL（仅支持 80 和 443 端口）。
+    llm_description: The full public page URL to extract from. Do not use embedded credentials, localhost, private IP addresses, or non-standard ports.
+    form: llm
+  - name: fields_json
+    type: string
+    required: true
+    label:
+      en_US: Fields JSON
+      zh_Hans: 字段 JSON
+    human_description:
+      en_US: JSON object mapping each output field name to a CSS selector, e.g. {"title":"h1","price":".price"}.
+      zh_Hans: JSON 对象，将输出字段名映射到 CSS 选择器，例如 {"title":"h1","price":".price"}。
+    llm_description: >-
+      A valid JSON object of 1 to 30 fields, mapping safe output field names to CSS selector strings. Example: {"title":"h1","price":".price"}. Each selector is limited to 512 characters. This tool uses AdsCrawl's documented legacy schema alias where string values are CSS selectors.
+    form: llm
+  - name: wait_until
+    type: select
+    required: false
+    default: domcontentloaded
+    options:
+      - value: domcontentloaded
+        label:
+          en_US: DOM content loaded
+          zh_Hans: DOM 内容加载完成
+      - value: load
+        label:
+          en_US: Load
+          zh_Hans: 完全加载
+      - value: networkidle
+        label:
+          en_US: Network idle
+          zh_Hans: 网络空闲
+    label:
+      en_US: Wait strategy
+      zh_Hans: 等待策略
+    human_description:
+      en_US: Page navigation wait strategy. DOM content loaded is the default.
+      zh_Hans: 页面导航等待策略，默认等待 DOM 内容加载。
+    llm_description: Choose domcontentloaded for a fast content-ready response, load for dependent page resources, or networkidle when the page needs a quiet network. Long polling may time out with networkidle.
+    form: llm
+  - name: timeout_ms
+    type: number
+    required: false
+    default: 60000
+    min: 1000
+    max: 90000
+    label:
+      en_US: Timeout (ms)
+      zh_Hans: 超时时间（毫秒）
+    human_description:
+      en_US: Navigation timeout from 1,000 to 90,000 milliseconds.
+      zh_Hans: 导航超时时间，范围为 1,000 至 90,000 毫秒。
+    llm_description: Maximum page-navigation time in milliseconds. Must be from 1000 to 90000; defaults to 60000.
+    form: llm
+extra:
+  python:
+    source: tools/extract_fields.py
