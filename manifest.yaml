@@ -1,0 +1,36 @@
+version: 0.0.1
+type: plugin
+author: adscrawl
+name: adscrawl
+repo: https://github.com/AdsCrawl/adscrawl-dify
+contact: support@adscrawl.net
+label:
+  en_US: AdsCrawl
+  zh_Hans: AdsCrawl
+description:
+  en_US: Render public web pages as HTML, Markdown, or article JSON, and extract structured fields with AdsCrawl.
+  zh_Hans: 使用 AdsCrawl 将公开网页渲染为 HTML、Markdown 或文章 JSON，并抽取结构化字段。
+icon: icon.svg
+icon_dark: icon-dark.svg
+resource:
+  memory: 268435456
+  permission: {}
+network:
+  domains:
+    - api.adscrawl.net
+plugins:
+  tools:
+    - provider/adscrawl.yaml
+meta:
+  version: 0.0.1
+  arch:
+    - amd64
+    - arm64
+  runner:
+    language: python
+    version: "3.12"
+    entrypoint: main
+  minimum_dify_version: null
+created_at: 2026-11-10T14:20:00+08:00
+privacy: PRIVACY.md
+verified: false
