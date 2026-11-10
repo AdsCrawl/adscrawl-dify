@@ -1,0 +1,30 @@
+identity:
+  author: adscrawl
+  name: adscrawl
+  label:
+    en_US: AdsCrawl
+    zh_Hans: AdsCrawl
+  description:
+    en_US: Render pages and extract fields through the AdsCrawl HTTPS API.
+    zh_Hans: 通过 AdsCrawl HTTPS API 渲染网页并抽取字段。
+  icon: icon.svg
+credentials_for_provider:
+  api_key:
+    type: secret-input
+    required: true
+    label:
+      en_US: AdsCrawl API key
+      zh_Hans: AdsCrawl API key
+    placeholder:
+      en_US: Enter your AdsCrawl API key
+      zh_Hans: 输入 AdsCrawl API key
+    help:
+      en_US: Create or manage an API key in your AdsCrawl dashboard. The key is sent only to https://api.adscrawl.net over HTTPS.
+      zh_Hans: 在 AdsCrawl 控制台创建或管理 API key。密钥只会通过 HTTPS 发送到 https://api.adscrawl.net。
+    url: https://app.adscrawl.net/dashboard/keys
+tools:
+  - tools/render_page.yaml
+  - tools/extract_fields.yaml
+extra:
+  python:
+    source: provider/adscrawl.py
